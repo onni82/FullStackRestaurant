@@ -1,6 +1,15 @@
 ﻿namespace FullStackRestaurant.DTOs
 {
-	public class TableDTOs
+	public class TableDTO
 	{
+		public int Id { get; set; }
+		public int TableNumber { get; set; }
+		public int Capacity { get; set; }
+	}
+
+	public class CreateTableDTO
+	{
+		public int TableNumber { get; set; }
+		public int Capacity { get; set; }
 	}
 }
