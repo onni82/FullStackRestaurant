@@ -1,8 +1,11 @@
-﻿namespace FullStackRestaurant.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FullStackRestaurant.Models
 {
 	public class Booking
 	{
-		public int Id { get; set; }
+        [Key]
+        public int Id { get; set; }
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
 		public int PartySize { get; set; }
