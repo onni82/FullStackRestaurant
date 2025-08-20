@@ -1,4 +1,7 @@
 
+using FullStackRestaurant.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace FullStackRestaurant
 {
     public class Program
@@ -8,8 +11,11 @@ namespace FullStackRestaurant
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<FullStackRestaurantDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -24,12 +30,8 @@ namespace FullStackRestaurant
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
