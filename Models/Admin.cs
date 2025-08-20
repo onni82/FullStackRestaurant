@@ -6,6 +6,7 @@ namespace FullStackRestaurant.Models
 	{
 		[Key]
 		public int Id { get; set; }
+		[MaxLength(200)]
 		public string Username { get; set; } = null!;
 		public string PasswordHash { get; set; } = null!;
 	}

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FullStackRestaurant.Models
 {
@@ -10,10 +11,12 @@ namespace FullStackRestaurant.Models
 		public DateTime End { get; set; }
 		public int PartySize { get; set; }
 
+		[ForeignKey("Table")]
 		public int TableId { get; set; }
 		public Table Table { get; set; } = null!;
 
-		public int CustomerId { get; set; }
+        [ForeignKey("Customer")]
+        public int CustomerId { get; set; }
 		public Customer Customer { get; set; } = null!;
 	}
 }
