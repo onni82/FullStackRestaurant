@@ -6,8 +6,10 @@ namespace FullStackRestaurant.Models
 	{
         [Key]
         public int Id { get; set; }
-		public string Name { get; set; } = null!;
-		public string Phone { get; set; } = null!;
+		[MaxLength(200)][Required]
+        public string Name { get; set; } = null!;
+        [Required]
+        public string Phone { get; set; } = null!;
 
 		public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 	}
