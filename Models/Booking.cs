@@ -5,8 +5,8 @@ namespace FullStackRestaurant.Models
 {
 	public class Booking
 	{
-        [Key]
-        public int Id { get; set; }
+		[Key]
+		public int Id { get; set; }
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
 		public int PartySize { get; set; }
@@ -15,8 +15,8 @@ namespace FullStackRestaurant.Models
 		public int TableId { get; set; }
 		public Table Table { get; set; } = null!;
 
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
+		[ForeignKey("Customer")]
+		public int CustomerId { get; set; }
 		public Customer Customer { get; set; } = null!;
 	}
 }

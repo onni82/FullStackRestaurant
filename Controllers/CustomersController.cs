@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CustomersController : ControllerBase
-    {
-    }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class CustomersController : ControllerBase
+	{
+	}
 }
