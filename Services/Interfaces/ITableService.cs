@@ -1,6 +1,12 @@
-﻿namespace FullStackRestaurant.Services.Interfaces
+﻿using FullStackRestaurant.DTOs;
+
+namespace FullStackRestaurant.Services.Interfaces
 {
-	public class ITableService
+	public interface ITableService
 	{
+		IEnumerable<TableDTO> GetAll();
+		TableDTO? GetById(int id);
+		TableDTO Create(CreateTableDTO dto);
+		bool Delete(int id);
 	}
 }
