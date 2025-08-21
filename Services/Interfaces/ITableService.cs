@@ -4,9 +4,9 @@ namespace FullStackRestaurant.Services.Interfaces
 {
 	public interface ITableService
 	{
-		IEnumerable<TableDTO> GetAll();
-		TableDTO? GetById(int id);
-		TableDTO Create(CreateTableDTO dto);
-		bool Delete(int id);
+		Task<IEnumerable<TableDTO>> GetAllAsync();
+		Task<TableDTO?> GetByIdAsync(int id);
+		Task<TableDTO> CreateAsync(CreateTableDTO dto);
+		Task<bool> DeleteAsync(int id);
 	}
 }
