@@ -1,6 +1,7 @@
 ﻿using FullStackRestaurant.Data;
 using FullStackRestaurant.DTOs;
 using FullStackRestaurant.Models;
+using FullStackRestaurant.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,31 +11,41 @@ namespace FullStackRestaurant.Controllers
 	[ApiController]
 	public class TablesController : ControllerBase
 	{
-		private readonly FullStackRestaurantDbContext _context;
+		private readonly ITableService _tableService;
 
-		public TablesController(FullStackRestaurantDbContext context)
-		{
-			_context = context;
-		}
+        public TablesController(ITableService tableService)
+        {
+            _tableService = tableService;
+        }
 
 		[HttpGet]
-		public IActionResult GetTables()
-		{
-			var tables = _context.Tables.ToList();
-			return Ok(tables);
-		}
+        public async Task<ActionResult<IEnumerable<TableDTO>>> GetAll()
+        {
+            var tables = await _tableService.GetAllAsync();
+            return Ok(tables);
+        }
 
-		[HttpPost]
-		public IActionResult CreateTable(CreateTableDTO dto)
-		{
-			var table = new Table
-			{
-				TableNumber = dto.TableNumber,
-				Capacity = dto.Capacity
-			};
-			_context.Tables.Add(table);
-			_context.SaveChanges();
-			return CreatedAtAction(nameof(GetTables), new { id = table.Id}, table);
-		}
-	}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TableDTO>> GetById(int id)
+        {
+            var table = await _tableService.GetByIdAsync(id);
+            if (table == null) { return NotFound(); }
+            return Ok(table);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TableDTO>> Create(CreateTableDTO dto)
+        {
+            var created = await _tableService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _tableService.DeleteAsync(id);
+            if (!deleted) { return NotFound(); }
+            return NoContent();
+        }
+    }
 }
