@@ -6,7 +6,7 @@ namespace FullStackRestaurant.Services.Interfaces
 	{
 		Task<IEnumerable<CustomerDTO>> GetAllAsync();
 		Task<CustomerDTO?> GetByIdAsync(int id);
-		Task<CustomerDTO> CreateAsync(CustomerDTO dto);
+		Task<CustomerDTO> CreateAsync(CreateCustomerDTO dto);
 		Task<bool> DeleteAsync(int id);
 	}
 }
