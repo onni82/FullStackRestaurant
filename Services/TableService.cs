@@ -1,33 +1,35 @@
 ﻿using FullStackRestaurant.Data;
 using FullStackRestaurant.DTOs;
 using FullStackRestaurant.Models;
+using FullStackRestaurant.Repositories.Interfaces;
 using FullStackRestaurant.Services.Interfaces;
 
 namespace FullStackRestaurant.Services
 {
 	public class TableService :ITableService
 	{
-		private readonly FullStackRestaurantDbContext _context;
+        private readonly ITableRepository _tableRepository;
 
-		public TableService(FullStackRestaurantDbContext context)
-		{
-			_context = context;
-		}
+        public TableService(ITableRepository tableRepository)
+        {
+            _tableRepository = tableRepository;
+        }
 
-		public IEnumerable<TableDTO> GetAll()
-		{
-			return _context.Tables.Select(t => new TableDTO
+        public async Task<IEnumerable<TableDTO>> GetAllAsync()
+        {
+            var tables = await _tableRepository.GetAllAsync();
+            return tables.Select(t => new TableDTO
 			{
-				Id = t.Id,
+                Id = t.Id,
 				TableNumber = t.TableNumber,
 				Capacity = t.Capacity
-			}).ToList();
+			});
 		}
 
-		public TableDTO? GetById(int id)
-		{
-			var t = _context.Tables.Find(id);
-			if (t == null) { return null; }
+        public async Task<TableDTO?> GetByIdAsync(int id)
+        {
+            var t = await _tableRepository.GetByIdAsync(id);
+            if (t == null) { return null; }
 
 			return new TableDTO
 			{
@@ -37,33 +39,27 @@ namespace FullStackRestaurant.Services
 			};
 		}
 
-		public TableDTO Create(CreateTableDTO dto)
-		{
+        public async Task<TableDTO> CreateAsync(CreateTableDTO dto)
+        {
 			var table = new Table
 			{
 				TableNumber = dto.TableNumber,
 				Capacity = dto.Capacity
 			};
 
-			_context.Tables.Add(table);
-			_context.SaveChanges();
+            var created = await _tableRepository.CreateAsync(table);
 
-			return new TableDTO
+            return new TableDTO
 			{
-				Id = table.Id,
-				TableNumber = table.TableNumber,
-				Capacity = table.Capacity
+				Id = created.Id,
+				TableNumber = created.TableNumber,
+				Capacity = created.Capacity
 			};
 		}
 
-		public bool Delete(int id)
-		{
-			var table = _context.Tables.Find(id);
-			if (table == null) { return false; };
-
-			_context.Tables.Remove(table);
-			_context.SaveChanges();
-			return true;
-		}
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _tableRepository.DeleteAsync(id);
+        }
 	}
 }
