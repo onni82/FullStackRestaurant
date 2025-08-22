@@ -9,7 +9,7 @@ namespace FullStackRestaurant.Models
 		public int Id { get; set; }
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
-		public int PartySize { get; set; }
+		public int Guests { get; set; }
 
 		[ForeignKey("Table")]
 		public int TableId { get; set; }
