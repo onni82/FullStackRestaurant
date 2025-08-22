@@ -19,9 +19,12 @@ namespace FullStackRestaurant.Repositories
 			return await _context.Tables.ToListAsync();
 		}
 
-		public async Task<Table?> GetByIdAsync(int id)
+		public async Task<Table> GetByIdAsync(int id)
 		{
-			return await _context.Tables.FindAsync(id);
+			var table = await _context.Tables.FindAsync(id);
+			if (table == null) { throw new KeyNotFoundException($"Table with ID {id} not found."); }
+
+			return table;
 		}
 
 		public async Task<Table> CreateAsync(Table table)
