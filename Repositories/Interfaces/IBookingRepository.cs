@@ -7,6 +7,6 @@ namespace FullStackRestaurant.Repositories.Interfaces
 		Task<IEnumerable<Booking>> GetAllAsync();
 		Task<Booking?> GetByIdAsync(int id);
 		Task<Booking> CreateAsync(Booking booking);
-		Task<bool> DeleteAsync();
+		Task<bool> DeleteAsync(int id);
 	}
 }
