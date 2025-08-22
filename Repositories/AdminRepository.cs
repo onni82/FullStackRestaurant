@@ -21,7 +21,7 @@ namespace FullStackRestaurant.Repositories
 
 		public async Task<Admin?> GetByUsernameAsync(string username)
 		{
-			return _context.Admins.FirstOrDefaultAsync(a => a.Username == username);
+			return await _context.Admins.FirstOrDefaultAsync(a => a.Username == username);
 		}
 
 		public async Task<Admin> CreateAsync(Admin admin)
