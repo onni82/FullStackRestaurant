@@ -1,6 +1,34 @@
-﻿namespace FullStackRestaurant.Repositories
+﻿using FullStackRestaurant.Data;
+using FullStackRestaurant.Models;
+using FullStackRestaurant.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace FullStackRestaurant.Repositories
 {
-	public class AdminRepository
+	public class AdminRepository : IAdminRepository
 	{
+		private readonly FullStackRestaurantDbContext _context;
+
+		public AdminRepository(FullStackRestaurantDbContext context)
+		{
+			_context = context;
+		}
+
+		public async Task<Admin?> GetByIdAsync(int id)
+		{
+			return await _context.Admins.FindAsync(id);
+		}
+
+		public async Task<Admin?> GetByUsernameAsync(string username)
+		{
+			return _context.Admins.FirstOrDefaultAsync(a => a.Username == username);
+		}
+
+		public async Task<Admin> CreateAsync(Admin admin)
+		{
+			_context.Admins.Add(admin);
+			await _context.SaveChangesAsync();
+			return admin;
+		}
 	}
 }
