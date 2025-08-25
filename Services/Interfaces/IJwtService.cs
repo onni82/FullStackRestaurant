@@ -4,6 +4,6 @@ namespace FullStackRestaurant.Services.Interfaces
 {
     public interface IJwtService
     {
-        string GenerateToken(Admin admin);
+        string GenerateToken(string username);
     }
 }

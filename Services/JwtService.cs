@@ -18,13 +18,12 @@ namespace FullStackRestaurant.Services
 			_config = config;
 		}
 
-		public string GenerateToken(Admin admin)
+		public string GenerateToken(string username)
 		{
 			var claims = new[]
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, admin.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, admin.Username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.UniqueName, admin.Username)
             };
 
 			var key = new SymmetricSecurityKey(
