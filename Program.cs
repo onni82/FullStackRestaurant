@@ -21,10 +21,10 @@ namespace FullStackRestaurant
 			});
 			builder.Services.AddScoped<ITableRepository, TableRepository>();
 			builder.Services.AddScoped<ITableService, TableService>();
-            builder.Services.AddScoped<IJwtService, JwtService>();
+			builder.Services.AddScoped<IJwtService, JwtService>();
 
-            // Add services to the container.
-            builder.Services.AddControllers();
+			// Add services to the container.
+			builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
