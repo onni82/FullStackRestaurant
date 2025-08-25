@@ -11,11 +11,11 @@ namespace FullStackRestaurant.Services
 {
 	public class JwtService : IJwtService
 	{
-		private readonly IConfiguration _configuration;
+		private readonly IConfiguration _config;
 
-		public JwtService(IConfiguration configuration)
+		public JwtService(IConfiguration config)
 		{
-			_configuration = configuration;
+			_config = config;
 		}
 
 		public string GenerateToken(Admin admin)
