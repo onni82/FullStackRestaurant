@@ -10,14 +10,14 @@ namespace FullStackRestaurant.Controllers
 	public class AuthController : ControllerBase
 	{
 		private readonly IAdminService _adminService;
-        public AuthController(IAdminService adminService) => _adminService = adminService;
+		public AuthController(IAdminService adminService) => _adminService = adminService;
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO dto)
+		[HttpPost("login")]
+		public async Task<IActionResult> Login([FromBody] LoginDTO dto)
 		{
-            var res = await _adminService.LoginAsync(dto);
-            if (res is null) { return Unauthorized(new { message = "Invalid username or password" }); }
-            return Ok(res);
-        }
-    }
+			var res = await _adminService.LoginAsync(dto);
+			if (res is null) { return Unauthorized(new { message = "Invalid username or password" }); }
+			return Ok(res);
+		}
+	}
 }
