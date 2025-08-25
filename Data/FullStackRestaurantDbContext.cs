@@ -22,6 +22,8 @@ namespace FullStackRestaurant.Data
 			modelBuilder.Entity<Booking>()
 				.Property(b => b.End)
 				.HasComputedColumnSql("[Start] + '02:00:00'", stored: true);
-		}
+            modelBuilder.Entity<Table>()
+                .HasIndex(t => t.TableNumber).IsUnique();
+        }
 	}
 }
