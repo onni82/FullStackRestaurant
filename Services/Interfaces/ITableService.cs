@@ -7,6 +7,8 @@ namespace FullStackRestaurant.Services.Interfaces
 		Task<IEnumerable<TableDTO>> GetAllAsync();
 		Task<TableDTO?> GetByIdAsync(int id);
 		Task<TableDTO> CreateAsync(CreateTableDTO dto);
+		Task<TableDTO?> UpdateAsync(int id, CreateTableDTO dto);
 		Task<bool> DeleteAsync(int id);
+		Task<IEnumerable<AvailableTableDTO>> GetAvailableAsync(DateTime start, int guests);
 	}
 }
