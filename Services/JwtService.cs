@@ -22,8 +22,8 @@ namespace FullStackRestaurant.Services
 		{
 			var claims = new[]
 			{
-				new Claim(JwtRegisteredClaimNames.Sub, admin.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, admin.Username)
+				new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, "Admin")
             };
 
 			var key = new SymmetricSecurityKey(
