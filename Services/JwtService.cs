@@ -28,7 +28,7 @@ namespace FullStackRestaurant.Services
             };
 
 			var key = new SymmetricSecurityKey(
-				Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key missing"))
+				Encoding.UTF8.GetBytes(_config["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key missing"))
 			);
 
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
