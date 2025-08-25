@@ -34,8 +34,8 @@ namespace FullStackRestaurant.Services
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 			var token = new JwtSecurityToken(
-				issuer: _configuration["Jwt:Issuer"],
-				audience: _configuration["Jwt:Audience"],
+				issuer: _config["Jwt:Issuer"],
+				audience: _config["Jwt:Audience"],
 				claims: claims,
 				expires: DateTime.UtcNow.AddHours(2),
 				signingCredentials: creds
