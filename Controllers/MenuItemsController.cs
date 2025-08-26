@@ -19,7 +19,10 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<MenuItemDTO>>> GetAll() => Ok(await _menuItemService.GetAllAsync());
+		public async Task<ActionResult<IEnumerable<MenuItemDTO>>> GetAll()
+		{
+			return Ok(await _menuItemService.GetAllAsync());
+		}
 
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<MenuItemDTO>> GetById(int id)

@@ -10,11 +10,15 @@ namespace FullStackRestaurant.Repositories
 		private readonly FullStackRestaurantDbContext _context;
 		public TableRepository(FullStackRestaurantDbContext context) => _context = context;
 
-		public async Task<IEnumerable<Table>> GetAllAsync() =>
-			await _context.Tables.AsNoTracking().OrderBy(t => t.TableNumber).ToListAsync();
+		public async Task<IEnumerable<Table>> GetAllAsync()
+		{
+            return await _context.Tables.AsNoTracking().OrderBy(t => t.TableNumber).ToListAsync();
+        }
 
-		public Task<Table?> GetByIdAsync(int id) =>
-			_context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+		public async Task<Table?> GetByIdAsync(int id)
+		{
+            return await _context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+        }
 
 		public async Task<Table> CreateAsync(Table table)
 		{

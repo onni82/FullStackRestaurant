@@ -21,7 +21,10 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<TableDTO>>> GetAll() => Ok(await _tableService.GetAllAsync());
+		public async Task<ActionResult<IEnumerable<TableDTO>>> GetAll()
+		{
+			return Ok(await _tableService.GetAllAsync());
+		}
 
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<TableDTO>> GetById(int id)
@@ -45,7 +48,10 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete(int id) => (await _tableService.DeleteAsync(id)) ? NoContent() : NotFound();
+		public async Task<IActionResult> Delete(int id)
+		{
+            return (await _tableService.DeleteAsync(id)) ? NoContent() : NotFound();
+        }
 
 		[HttpGet("available")]
 		public async Task<ActionResult<IEnumerable<AvailableTableDTO>>> GetAvailable([FromQuery] DateTime start, [FromQuery] int guests)
