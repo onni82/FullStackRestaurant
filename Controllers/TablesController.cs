@@ -50,7 +50,7 @@ namespace FullStackRestaurant.Controllers
 		[HttpGet("available")]
 		public async Task<ActionResult<IEnumerable<AvailableTableDTO>>> GetAvailable([FromQuery] DateTime start, [FromQuery] int guests)
 		{
-			if (guests <= 0) return BadRequest("Guests must be > 0.");
+			if (guests <= 0) { return BadRequest("Guests must be > 0."); }
 			
 			var result = await _tableService.GetAvailableAsync(start, guests);
 			return Ok(result);

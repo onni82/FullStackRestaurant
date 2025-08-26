@@ -36,7 +36,7 @@ namespace FullStackRestaurant.Services
 		public async Task<TableDTO?> UpdateAsync(int id, CreateTableDTO dto)
 		{
 			var existing = await _tableRepo.GetByIdAsync(id);
-			if (existing is null) return null;
+			if (existing is null) { return null; }
 			existing.TableNumber = dto.TableNumber;
 			existing.Capacity = dto.Capacity;
 			var updated = await _tableRepo.UpdateAsync(existing);

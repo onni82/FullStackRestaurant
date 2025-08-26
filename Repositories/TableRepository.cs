@@ -33,7 +33,7 @@ namespace FullStackRestaurant.Repositories
 		public async Task<bool> DeleteAsync(int id)
 		{
 			var entity = await _context.Tables.FindAsync(id);
-			if (entity is null) return false;
+			if (entity is null) { return false; }
 			_context.Tables.Remove(entity);
 			await _context.SaveChangesAsync();
 			return true;
