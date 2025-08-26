@@ -1,10 +1,13 @@
 
+using System.Text;
 using FullStackRestaurant.Data;
 using FullStackRestaurant.Repositories;
 using FullStackRestaurant.Repositories.Interfaces;
 using FullStackRestaurant.Services;
 using FullStackRestaurant.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FullStackRestaurant
 {
@@ -40,6 +43,29 @@ namespace FullStackRestaurant
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+
+			// JWT auth
+			var key = builder.Configuration["Jwt:Key"] ?? "dev_only_change_me_please_1234567890";
+			builder.Services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+			.AddJwtBearer(options =>
+			{
+				options.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = builder.Configuration["Jwt:Issuer"],
+					ValidAudience = builder.Configuration["Jwt:Audience"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+				};
+			});
+
+			builder.Services.AddAuthorization();
 
 			var app = builder.Build();
 
