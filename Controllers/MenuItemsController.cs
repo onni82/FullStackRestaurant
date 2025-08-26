@@ -1,11 +1,13 @@
 ﻿using FullStackRestaurant.DTOs;
 using FullStackRestaurant.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-	[Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class MenuItemsController : ControllerBase
 	{
