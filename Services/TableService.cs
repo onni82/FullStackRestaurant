@@ -11,8 +11,8 @@ namespace FullStackRestaurant.Services
 	{
 		private readonly ITableRepository _tableRepo;
 		public TableService(ITableRepository tableRepo) {
-            _tableRepo = tableRepo;
-        }
+			_tableRepo = tableRepo;
+		}
 
 		public async Task<IEnumerable<TableDTO>> GetAllAsync()
 		{
@@ -45,8 +45,8 @@ namespace FullStackRestaurant.Services
 
 		public async Task<bool> DeleteAsync(int id)
 		{
-            return await _tableRepo.DeleteAsync(id);
-        }
+			return await _tableRepo.DeleteAsync(id);
+		}
 
 		public async Task<IEnumerable<AvailableTableDTO>> GetAvailableAsync(DateTime start, int guests)
 		{
