@@ -4,6 +4,7 @@ using FullStackRestaurant.DTOs;
 using FullStackRestaurant.Models;
 using FullStackRestaurant.Repositories.Interfaces;
 using FullStackRestaurant.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace FullStackRestaurant.Services
 {
@@ -11,6 +12,7 @@ namespace FullStackRestaurant.Services
 	{
 		private readonly IAdminRepository _adminRepo;
 		private readonly IJwtService _jwtService;
+		private readonly IPasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
 
 		public AdminService(IAdminRepository adminRepo, IJwtService jwtService)
 		{
@@ -18,61 +20,16 @@ namespace FullStackRestaurant.Services
 			_jwtService = jwtService;
 		}
 
-		public async Task<AdminDTO?> GetByIdAsync(int id)
+		public async Task<AuthResponseDTO?> LoginAsync(LoginDTO dto)
 		{
-			var admin = await _adminRepo.GetByIdAsync(id);
-			return admin is null ? null : new AdminDTO
-			{
-				Id = admin.Id,
-				Username = admin.Username
-			};
-		}
-
-		public async Task<AdminDTO?> GetByUsernameAsync(string username)
-		{
-			var admin = await _adminRepository.GetByUsernameAsync(username);
-            return admin is null ? null : new AdminDTO
-            {
-                Id = admin.Id,
-                Username = admin.Username
-            };
-        }
-
-		public async Task<AdminDTO> CreateAsync(CreateAdminDTO dto)
-		{
-			var passwordHash = HashPassword(dto.Password);
-
-			var admin = new Admin
-			{
-				Username = dto.Username,
-				PasswordHash = passwordHash
-			};
-
-			var created = await _adminRepository.CreateAsync(admin);
-
-			return new AdminDTO
-			{
-				Id = created.Id,
-				Username = created.Username
-			};
-		}
-
-		public async Task<string?> LoginAsync(LoginDTO dto)
-		{
-			var admin = await _adminRepository.GetByUsernameAsync(dto.Username);
+			var admin = await _adminRepo.GetByUsernameAsync(dto.Username);
 			if (admin is null) { return null; }
 
-			var hash = HashPassword(dto.Password);
-			if (admin.PasswordHash != hash) { return null; }
+			var result = _passwordHasher.VerifyHashedPassword(dto.Username, admin.PasswordHash, dto.Password);
+			if (result == PasswordVerificationResult.Failed) { return null; }
 
-			return _jwtService.GenerateToken(admin);
-		}
-
-		private string HashPassword(string password)
-		{
-			using var sha256 = SHA256.Create();
-			var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-			return Convert.ToBase64String(bytes);
+			var token = _jwtService.GenerateToken(admin.Id, admin.Username);
+			return new AuthResponseDTO { Token = token };
 		}
 	}
 }

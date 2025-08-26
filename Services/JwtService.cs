@@ -18,16 +18,19 @@ namespace FullStackRestaurant.Services
 			_config = config;
 		}
 
-		public string GenerateToken(string username)
+		public string GenerateToken(int adminId, string username)
 		{
 			var claims = new[]
 			{
-				new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
+				new Claim(JwtRegisteredClaimNames.Sub, adminId.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name, username),
+				new Claim(ClaimTypes.Role, "Admin")
+			};
 
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-
+			var keyString = _config["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key missing");
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 			var token = new JwtSecurityToken(
