@@ -1,10 +1,11 @@
 ﻿using FullStackRestaurant.DTOs;
 using FullStackRestaurant.Models;
 using FullStackRestaurant.Repositories.Interfaces;
+using FullStackRestaurant.Services.Interfaces;
 
 namespace FullStackRestaurant.Services
 {
-	public class MenuItemService
+	public class MenuItemService : IMenuItemService
 	{
 		private readonly IMenuItemRepository _menuItemRepo;
 
