@@ -17,33 +17,30 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAll()
-		{
-			var customers = await _customerService.GetAllAsync();
-			return Ok(customers);
-		}
+		public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAll() => Ok(await _customerService.GetAllAsync());
 
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
 		public async Task<ActionResult<CustomerDTO>> GetById(int id)
 		{
 			var customer = await _customerService.GetByIdAsync(id);
-			if (customer == null) { return NotFound(); }
-			return Ok(customer);
+			return customer is null ? NotFound() : Ok(customer);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<CustomerDTO>> Create(CreateCustomerDTO dto)
+		public async Task<ActionResult<CustomerDTO>> Create([FromBody] CreateCustomerDTO dto)
 		{
 			var created = await _customerService.CreateAsync(dto);
 			return CreatedAtAction(nameof(GetById), new { id = created.Id}, created);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete(int id)
+		[HttpPut("{id:int}")]
+		public async Task<ActionResult<CustomerDTO>> Update(int id, [FromBody] CreateCustomerDTO dto)
 		{
-			var deleted = await _customerService.DeleteAsync(id);
-			if (!deleted) { return NotFound(); }
-			return NoContent();
+			var updated = await _customerService.UpdateAsync(id, dto);
+			return updated is null ? NotFound() : Ok(updated);
 		}
+
+		[HttpDelete("{id:int}")]
+		public async Task<IActionResult> Delete(int id) => (await _customerService.DeleteAsync(id)) ? NoContent() : NotFound();
 	}
 }

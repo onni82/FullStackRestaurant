@@ -9,7 +9,7 @@ namespace FullStackRestaurant.Models
 		[MaxLength(200)][Required]
 		public string Name { get; set; } = null!;
 		[Required]
-		public string Phone { get; set; } = null!;
+		public string PhoneNumber { get; set; } = null!;
 
 		public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 	}

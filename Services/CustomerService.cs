@@ -7,34 +7,33 @@ namespace FullStackRestaurant.Services
 {
 	public class CustomerService : ICustomerService
 	{
-		private readonly ICustomerRepository _customerRepository;
+		private readonly ICustomerRepository _customerRepo;
 
-		public CustomerService(ICustomerRepository customerRepository)
+		public CustomerService(ICustomerRepository customerRepo)
 		{
-			_customerRepository = customerRepository;
+			_customerRepo = customerRepo;
 		}
 
 		public async Task<IEnumerable<CustomerDTO>> GetAllAsync()
 		{
-			var customers = await _customerRepository.GetAllAsync();
+			var customers = await _customerRepo.GetAllAsync();
 			return customers.Select(c => new CustomerDTO
 			{
 				Id = c.Id,
 				Name = c.Name,
-				Phone = c.Phone
+				PhoneNumber = c.PhoneNumber
 			});
 		}
 
 		public async Task<CustomerDTO?> GetByIdAsync(int id)
 		{
-			var customer = await _customerRepository.GetByIdAsync(id);
-			if (customer == null) { return null; }
+			var customer = await _customerRepo.GetByIdAsync(id);
 
-			return new CustomerDTO
+			return customer is null ? null : new CustomerDTO
 			{
 				Id = customer.Id,
 				Name = customer.Name,
-				Phone = customer.Phone
+				PhoneNumber = customer.PhoneNumber
 			};
 		}
 
@@ -43,22 +42,37 @@ namespace FullStackRestaurant.Services
 			var customer = new Customer
 			{
 				Name = dto.Name,
-				Phone = dto.Phone
+				PhoneNumber = dto.PhoneNumber
 			};
 
-			var created = await _customerRepository.CreateAsync(customer);
+			var created = await _customerRepo.CreateAsync(customer);
 
 			return new CustomerDTO
 			{
 				Id = created.Id,
 				Name = created.Name,
-				Phone = created.Phone
+				PhoneNumber = created.PhoneNumber
+			};
+		}
+
+		public async Task<CustomerDTO?> UpdateAsync(int id, CreateCustomerDTO dto)
+		{
+			var existing = await _customerRepo.GetByIdAsync(id);
+			if (existing is null) { return null; }
+			existing.Name = dto.Name;
+			existing.PhoneNumber = dto.PhoneNumber;
+			var updated = await _customerRepo.UpdateAsync(existing);
+			return new CustomerDTO
+			{
+				Id = updated.Id,
+				Name = updated.Name,
+				PhoneNumber = updated.PhoneNumber
 			};
 		}
 
 		public async Task<bool> DeleteAsync(int id)
 		{
-			return await _customerRepository.DeleteAsync(id);
+			return await _customerRepo.DeleteAsync(id);
 		}
 	}
 }

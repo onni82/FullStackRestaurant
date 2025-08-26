@@ -16,12 +16,12 @@ namespace FullStackRestaurant.Repositories
 
 		public async Task<IEnumerable<Customer>> GetAllAsync()
 		{
-			return await _context.Customers.ToListAsync();
+			return await _context.Customers.AsNoTracking().OrderBy(customer => customer.Name).ToListAsync();
 		}
 
 		public async Task<Customer?> GetByIdAsync(int id)
 		{
-			return await _context.Customers.FindAsync(id);
+			return await _context.Customers.AsNoTracking().FirstOrDefaultAsync(customer => customer.Id == id);
 		}
 
 		public async Task<Customer> CreateAsync(Customer customer)
@@ -30,10 +30,18 @@ namespace FullStackRestaurant.Repositories
 			await _context.SaveChangesAsync();
 			return customer;
 		}
+
+		public async Task<Customer> UpdateAsync(Customer customer)
+		{
+			_context.Customers.Update(customer);
+			await _context.SaveChangesAsync();
+			return customer;
+		}
+
 		public async Task<bool> DeleteAsync(int id)
 		{
 			var customer = await _context.Customers.FindAsync(id);
-			if (customer == null) { return false; }
+			if (customer is null) { return false; }
 
 			_context.Customers.Remove(customer);
 			await _context.SaveChangesAsync();
