@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
+	[Authorize(Roles = "Admin")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class TablesController : ControllerBase
 	{
