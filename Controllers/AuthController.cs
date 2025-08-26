@@ -15,7 +15,7 @@ namespace FullStackRestaurant.Controllers
 			_adminService = adminService;
 		}
 
-        [HttpPost("login")]
+		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginDTO dto)
 		{
 			var res = await _adminService.LoginAsync(dto);
