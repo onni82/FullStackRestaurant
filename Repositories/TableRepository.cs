@@ -12,13 +12,13 @@ namespace FullStackRestaurant.Repositories
 
 		public async Task<IEnumerable<Table>> GetAllAsync()
 		{
-            return await _context.Tables.AsNoTracking().OrderBy(t => t.TableNumber).ToListAsync();
-        }
+			return await _context.Tables.AsNoTracking().OrderBy(t => t.TableNumber).ToListAsync();
+		}
 
 		public async Task<Table?> GetByIdAsync(int id)
 		{
-            return await _context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-        }
+			return await _context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+		}
 
 		public async Task<Table> CreateAsync(Table table)
 		{

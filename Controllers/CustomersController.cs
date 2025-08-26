@@ -22,7 +22,7 @@ namespace FullStackRestaurant.Controllers
 		public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAll()
 		{
 			return Ok(await _customerService.GetAllAsync());
-        }
+		}
 
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<CustomerDTO>> GetById(int id)
@@ -49,6 +49,6 @@ namespace FullStackRestaurant.Controllers
 		public async Task<IActionResult> Delete(int id)
 		{
 			return (await _customerService.DeleteAsync(id)) ? NoContent() : NotFound();
-        }
+		}
 	}
 }

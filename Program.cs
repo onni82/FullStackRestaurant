@@ -30,12 +30,12 @@ namespace FullStackRestaurant
 			builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 			builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
-            // Scoped services
-            builder.Services.AddScoped<ITableService, TableService>();
-            builder.Services.AddScoped<ICustomerService, CustomerService>();
-            builder.Services.AddScoped<IBookingService, BookingService>();
-            builder.Services.AddScoped<IMenuItemService, MenuItemService>();
-            builder.Services.AddScoped<IAdminService, AdminService>();
+			// Scoped services
+			builder.Services.AddScoped<ITableService, TableService>();
+			builder.Services.AddScoped<ICustomerService, CustomerService>();
+			builder.Services.AddScoped<IBookingService, BookingService>();
+			builder.Services.AddScoped<IMenuItemService, MenuItemService>();
+			builder.Services.AddScoped<IAdminService, AdminService>();
 			builder.Services.AddScoped<IJwtService, JwtService>();
 
 			// Add services to the container.
@@ -78,7 +78,7 @@ namespace FullStackRestaurant
 
 			app.UseHttpsRedirection();
 			app.UseAuthentication();
-            app.UseAuthorization();
+			app.UseAuthorization();
 			app.MapControllers();
 			app.Run();
 		}
