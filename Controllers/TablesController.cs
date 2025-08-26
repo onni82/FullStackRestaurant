@@ -23,7 +23,7 @@ namespace FullStackRestaurant.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<TableDTO>>> GetAll() => Ok(await _tableService.GetAllAsync());
 
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
 		public async Task<ActionResult<TableDTO>> GetById(int id)
 		{
 			var table = await _tableService.GetByIdAsync(id);
