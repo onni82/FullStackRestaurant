@@ -9,18 +9,18 @@ namespace FullStackRestaurant.Services
 {
 	public class AdminService : IAdminService
 	{
-		private readonly IAdminRepository _adminRepository;
+		private readonly IAdminRepository _adminRepo;
 		private readonly IJwtService _jwtService;
 
-		public AdminService(IAdminRepository adminRepository, IJwtService jwtService)
+		public AdminService(IAdminRepository adminRepo, IJwtService jwtService)
 		{
-			_adminRepository = adminRepository;
+			_adminRepo = adminRepo;
 			_jwtService = jwtService;
 		}
 
 		public async Task<AdminDTO?> GetByIdAsync(int id)
 		{
-			var admin = await _adminRepository.GetByIdAsync(id);
+			var admin = await _adminRepo.GetByIdAsync(id);
 			return admin is null ? null : new AdminDTO
 			{
 				Id = admin.Id,
