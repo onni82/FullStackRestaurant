@@ -21,11 +21,7 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<TableDTO>>> GetAll()
-		{
-			var tables = await _tableService.GetAllAsync();
-			return Ok(tables);
-		}
+		public async Task<ActionResult<IEnumerable<TableDTO>>> GetAll() => Ok(await _tableService.GetAllAsync());
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult<TableDTO>> GetById(int id)
