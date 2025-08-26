@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
+	[Authorize(Roles = "Admin")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class MenuItemsController : ControllerBase
 	{
@@ -19,25 +19,27 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<MenuItemDTO>>> GetAll()
-		{
-			var items = await _menuItemService.GetAllAsync();
-			return Ok(items);
-		}
+		public async Task<ActionResult<IEnumerable<MenuItemDTO>>> GetAll() => Ok(await _menuItemService.GetAllAsync());
 
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
 		public async Task<ActionResult<MenuItemDTO>> GetById(int id)
 		{
 			var item = await _menuItemService.GetByIdAsync(id);
-			if (item == null) { return NotFound(); }
-			return Ok(item);
+			return item is null ? NotFound() : Ok(item);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<MenuItemDTO>> Create(CreateMenuItemDTO dto)
+		public async Task<ActionResult<MenuItemDTO>> Create([FromBody] CreateMenuItemDTO dto)
 		{
 			var item = await _menuItemService.CreateAsync(dto);
 			return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+		}
+
+		[HttpPut("{id:int}")]
+		public async Task<ActionResult<MenuItemDTO>> Update(int id, [FromBody] CreateMenuItemDTO dto)
+		{
+			var updated = await _menuItemService.UpdateAsync(id, dto);
+			return updated is null ? NotFound() : Ok(updated);
 		}
 
 		[HttpDelete("{id}")]

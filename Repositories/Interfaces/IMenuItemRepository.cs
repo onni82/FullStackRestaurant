@@ -7,6 +7,7 @@ namespace FullStackRestaurant.Repositories.Interfaces
 		Task<IEnumerable<MenuItem>> GetAllAsync();
 		Task<MenuItem?> GetByIdAsync(int id);
 		Task<MenuItem> CreateAsync(MenuItem menuItem);
-		Task<bool> DeleteAsync(int id);
+        Task<MenuItem> UpdateAsync(MenuItem menuItem);
+        Task<bool> DeleteAsync(int id);
 	}
 }

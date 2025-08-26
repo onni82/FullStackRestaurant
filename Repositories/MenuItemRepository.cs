@@ -16,15 +16,22 @@ namespace FullStackRestaurant.Repositories
 
 		public async Task<IEnumerable<MenuItem>> GetAllAsync()
 		{
-			return await _context.MenuItems.ToListAsync();
+			return await _context.MenuItems.AsNoTracking().OrderBy(menuItem => menuItem.Name).ToListAsync();
 		}
 
 		public async Task<MenuItem?> GetByIdAsync(int id)
 		{
-			return await _context.MenuItems.FindAsync(id);
+			return await _context.MenuItems.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
 		}
 
 		public async Task<MenuItem> CreateAsync(MenuItem menuItem)
+		{
+			_context.MenuItems.Add(menuItem);
+			await _context.SaveChangesAsync();
+			return menuItem;
+		}
+
+		public async Task<MenuItem> UpdateAsync(MenuItem menuItem)
 		{
 			_context.MenuItems.Add(menuItem);
 			await _context.SaveChangesAsync();
