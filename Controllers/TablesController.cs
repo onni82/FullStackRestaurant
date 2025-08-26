@@ -31,8 +31,7 @@ namespace FullStackRestaurant.Controllers
 		public async Task<ActionResult<TableDTO>> GetById(int id)
 		{
 			var table = await _tableService.GetByIdAsync(id);
-			if (table == null) { return NotFound(); }
-			return Ok(table);
+			return table is null ? NotFound() : Ok(table);
 		}
 
 		[HttpPost]
