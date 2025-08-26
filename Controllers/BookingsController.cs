@@ -45,15 +45,15 @@ namespace FullStackRestaurant.Controllers
 			}
 		}
 
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id) => (await _bookingService.DeleteAsync(id)) ? NoContent() : NotFound();
+		[HttpDelete("{id:int}")]
+		public async Task<IActionResult> Delete(int id) => (await _bookingService.DeleteAsync(id)) ? NoContent() : NotFound();
 
 		[HttpGet("available-tables")]
 		public async Task<ActionResult<IEnumerable<AvailableTableDTO>>> AvailableTables([FromQuery] DateTime start, [FromQuery] int guests)
 		{
-            if (guests <= 0) return BadRequest("Guests must be > 0.");
-            var res = await _tableService.GetAvailableAsync(start, guests);
-            return Ok(res);
-        }
-    }
+			if (guests <= 0) return BadRequest("Guests must be > 0.");
+			var res = await _tableService.GetAvailableAsync(start, guests);
+			return Ok(res);
+		}
+	}
 }
