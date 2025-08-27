@@ -18,9 +18,6 @@ namespace FullStackRestaurant.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Booking>()
-				.Property(b => b.End)
-				.ValueGeneratedNever();
 			modelBuilder.Entity<Table>()
 				.HasIndex(t => t.TableNumber).IsUnique();
 			modelBuilder.Entity<Admin>().HasData(new Admin
