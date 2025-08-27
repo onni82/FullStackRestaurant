@@ -24,6 +24,12 @@ namespace FullStackRestaurant.Data
 				.HasComputedColumnSql("[Start] + '02:00:00'", stored: true);
 			modelBuilder.Entity<Table>()
 				.HasIndex(t => t.TableNumber).IsUnique();
+			modelBuilder.Entity<Admin>().HasData(new Admin
+			{
+				Id = 1,
+				Username = "admin",
+				PasswordHash = "AQAAAAIAAYagAAAAEMlm8qVFOWLSSwt6dgbRf1ybq5NLBlTgpiU0AGfi5P7v6dqb7HInxtaKN6ZCFjJCxQ==" // Needs to be hashed. The password is password123
+			});
 		}
 	}
 }
