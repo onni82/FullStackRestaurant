@@ -18,10 +18,9 @@ namespace FullStackRestaurant.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			// Default 2-hour booking
 			modelBuilder.Entity<Booking>()
 				.Property(b => b.End)
-				.HasComputedColumnSql("DATEADD(hour, 2, [Start]", stored: true);
+				.ValueGeneratedNever();
 			modelBuilder.Entity<Table>()
 				.HasIndex(t => t.TableNumber).IsUnique();
 			modelBuilder.Entity<Admin>().HasData(new Admin
