@@ -51,7 +51,7 @@ namespace FullStackRestaurant.Services
 				TableId = dto.TableId,
 				CustomerId = dto.CustomerId,
 				Start = dto.Start,
-				// End = dto.Start.AddHours(2), // Assuming a default duration of 2 hours
+				End = dto.Start.AddHours(2), // Assuming a default duration of 2 hours
 				Guests = dto.Guests
 			};
 
