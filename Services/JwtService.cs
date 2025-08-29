@@ -25,8 +25,7 @@ namespace FullStackRestaurant.Services
 				new Claim(JwtRegisteredClaimNames.Sub, adminId.ToString()),
 				new Claim(JwtRegisteredClaimNames.UniqueName, username),
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-				new Claim(ClaimTypes.Name, username),
-				new Claim(ClaimTypes.Role, "Admin")
+				new Claim(ClaimTypes.Name, username)
 			};
 
 			var keyString = _config["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key missing");

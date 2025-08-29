@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-	[Authorize(Roles = "Admin")]
+	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class BookingsController : ControllerBase
