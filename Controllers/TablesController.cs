@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class TablesController : ControllerBase
@@ -26,6 +25,16 @@ namespace FullStackRestaurant.Controllers
 			return Ok(await _tableService.GetAllAsync());
 		}
 
+		[HttpGet("available")]
+		public async Task<ActionResult<IEnumerable<AvailableTableDTO>>> GetAvailable([FromQuery] DateTime start, [FromQuery] int guests)
+		{
+			if (guests <= 0) { return BadRequest("Guests must be > 0."); }
+
+			var result = await _tableService.GetAvailableAsync(start, guests);
+			return Ok(result);
+		}
+
+		[Authorize]
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<TableDTO>> GetById(int id)
 		{
@@ -33,6 +42,7 @@ namespace FullStackRestaurant.Controllers
 			return table is null ? NotFound() : Ok(table);
 		}
 
+		[Authorize]
 		[HttpPost]
 		public async Task<ActionResult<TableDTO>> Create([FromBody] CreateTableDTO dto)
 		{
@@ -40,6 +50,7 @@ namespace FullStackRestaurant.Controllers
 			return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
 		}
 
+		[Authorize]
 		[HttpPut("{id:int}")]
 		public async Task<ActionResult<TableDTO>> Update(int id, [FromBody] CreateTableDTO dto)
 		{
@@ -47,19 +58,11 @@ namespace FullStackRestaurant.Controllers
 			return updated is null ? NotFound() : Ok(updated);
 		}
 
+		[Authorize]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			return (await _tableService.DeleteAsync(id)) ? NoContent() : NotFound();
-		}
-
-		[HttpGet("available")]
-		public async Task<ActionResult<IEnumerable<AvailableTableDTO>>> GetAvailable([FromQuery] DateTime start, [FromQuery] int guests)
-		{
-			if (guests <= 0) { return BadRequest("Guests must be > 0."); }
-			
-			var result = await _tableService.GetAvailableAsync(start, guests);
-			return Ok(result);
 		}
 	}
 }

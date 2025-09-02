@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class CustomersController : ControllerBase
@@ -18,12 +17,21 @@ namespace FullStackRestaurant.Controllers
 			_customerService = customerService;
 		}
 
+		[HttpPost]
+		public async Task<ActionResult<CustomerDTO>> Create([FromBody] CreateCustomerDTO dto)
+		{
+			var created = await _customerService.CreateAsync(dto);
+			return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+		}
+
+		[Authorize]
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAll()
 		{
 			return Ok(await _customerService.GetAllAsync());
 		}
 
+		[Authorize]
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<CustomerDTO>> GetById(int id)
 		{
@@ -31,13 +39,7 @@ namespace FullStackRestaurant.Controllers
 			return customer is null ? NotFound() : Ok(customer);
 		}
 
-		[HttpPost]
-		public async Task<ActionResult<CustomerDTO>> Create([FromBody] CreateCustomerDTO dto)
-		{
-			var created = await _customerService.CreateAsync(dto);
-			return CreatedAtAction(nameof(GetById), new { id = created.Id}, created);
-		}
-
+		[Authorize]
 		[HttpPut("{id:int}")]
 		public async Task<ActionResult<CustomerDTO>> Update(int id, [FromBody] CreateCustomerDTO dto)
 		{
@@ -45,6 +47,7 @@ namespace FullStackRestaurant.Controllers
 			return updated is null ? NotFound() : Ok(updated);
 		}
 
+		[Authorize]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete(int id)
 		{

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class BookingsController : ControllerBase
@@ -19,19 +18,6 @@ namespace FullStackRestaurant.Controllers
 		{
 			_bookingService = bookingService;
 			_tableService = tableService;
-		}
-
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<BookingDTO>>> GetAll()
-		{
-			return Ok(await _bookingService.GetAllAsync());
-		}
-
-		[HttpGet("{id:int}")]
-		public async Task<ActionResult<BookingDTO>> GetById(int id)
-		{
-			var dto = await _bookingService.GetByIdAsync(id);
-			return dto is null ? NotFound() : Ok(dto);
 		}
 
 		[HttpPost]
@@ -48,12 +34,29 @@ namespace FullStackRestaurant.Controllers
 			}
 		}
 
+		[Authorize]
+		[HttpGet]
+		public async Task<ActionResult<IEnumerable<BookingDTO>>> GetAll()
+		{
+			return Ok(await _bookingService.GetAllAsync());
+		}
+
+		[Authorize]
+		[HttpGet("{id:int}")]
+		public async Task<ActionResult<BookingDTO>> GetById(int id)
+		{
+			var dto = await _bookingService.GetByIdAsync(id);
+			return dto is null ? NotFound() : Ok(dto);
+		}
+
+		[Authorize]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			return (await _bookingService.DeleteAsync(id)) ? NoContent() : NotFound();
 		}
 
+		[Authorize]
 		[HttpGet("available-tables")]
 		public async Task<ActionResult<IEnumerable<AvailableTableDTO>>> AvailableTables([FromQuery] DateTime start, [FromQuery] int guests)
 		{
