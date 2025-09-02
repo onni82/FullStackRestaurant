@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackRestaurant.Controllers
 {
-	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class MenuItemsController : ControllerBase
@@ -31,21 +30,24 @@ namespace FullStackRestaurant.Controllers
 			return item is null ? NotFound() : Ok(item);
 		}
 
-		[HttpPost]
+        [Authorize]
+        [HttpPost]
 		public async Task<ActionResult<MenuItemDTO>> Create([FromBody] CreateMenuItemDTO dto)
 		{
 			var item = await _menuItemService.CreateAsync(dto);
 			return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
 		}
 
-		[HttpPut("{id:int}")]
+        [Authorize]
+        [HttpPut("{id:int}")]
 		public async Task<ActionResult<MenuItemDTO>> Update(int id, [FromBody] CreateMenuItemDTO dto)
 		{
 			var updated = await _menuItemService.UpdateAsync(id, dto);
 			return updated is null ? NotFound() : Ok(updated);
 		}
 
-		[HttpDelete("{id}")]
+        [Authorize]
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			var deleted = await _menuItemService.DeleteAsync(id);
