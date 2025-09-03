@@ -110,7 +110,7 @@ Protected endpoints (Bookings, Customers, MenuItems, Tables) require a valid tok
 - `POST /api/Bookings` → Create a booking (checks availability)
 - `GET /api/Bookings/{id}` → Get booking by ID
 - `DELETE /api/Bookings/{id}` → Cancel a booking
-- `GET /api/Bookings/available-tables` → Find available tables
+- `GET /api/Bookings/available-tables` → Find available tables // commented out
 
 ### Customers
 - `GET /api/Customers` → List all customers
