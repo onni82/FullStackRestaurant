@@ -74,7 +74,7 @@ http://localhost:5024
 ## Authentication
 Admins can log in using:
 ```http
-POST /api/admins/login
+POST /api/Auth/login
 ```
 with JSON body:
 ```json
