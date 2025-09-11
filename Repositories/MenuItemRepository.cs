@@ -38,7 +38,7 @@ namespace FullStackRestaurant.Repositories
 		public async Task<MenuItem> UpdateAsync(int id, UpdateMenuItemDTO dto)
 		{
 			var existing = await _context.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
-			if (existing != null)
+			if (existing == null)
 			{
 				throw new Exception("Menu item not found");
 			}
