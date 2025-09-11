@@ -40,7 +40,7 @@ namespace FullStackRestaurant.Controllers
 
 		[Authorize]
 		[HttpPut("{id:int}")]
-		public async Task<ActionResult<MenuItemDTO>> Update(int id, [FromBody] CreateMenuItemDTO dto)
+		public async Task<ActionResult<MenuItemDTO>> Update(int id, [FromBody] UpdateMenuItemDTO dto)
 		{
 			var updated = await _menuItemService.UpdateAsync(id, dto);
 			return updated is null ? NotFound() : Ok(updated);

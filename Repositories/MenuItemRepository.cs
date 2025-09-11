@@ -1,4 +1,5 @@
 ﻿using FullStackRestaurant.Data;
+using FullStackRestaurant.DTOs;
 using FullStackRestaurant.Models;
 using FullStackRestaurant.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -31,11 +32,22 @@ namespace FullStackRestaurant.Repositories
 			return menuItem;
 		}
 
-		public async Task<MenuItem> UpdateAsync(MenuItem menuItem)
+		public async Task<MenuItem> UpdateAsync(int id, UpdateMenuItemDTO dto)
 		{
-			_context.MenuItems.Add(menuItem);
+			var existing = await _context.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+			if (existing != null)
+			{
+				throw new Exception("Menu item not found");
+			}
+
+			existing.Name = dto.Name;
+			existing.Description = dto.Description;
+			existing.Price = dto.Price;
+			existing.IsPopular = dto.IsPopular;
+			existing.ImageUrl = dto.ImageUrl;
+
 			await _context.SaveChangesAsync();
-			return menuItem;
+			return existing;
 		}
 
 		public async Task<bool> DeleteAsync(int id)

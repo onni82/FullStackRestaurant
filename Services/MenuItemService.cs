@@ -66,27 +66,10 @@ namespace FullStackRestaurant.Services
 			};
 		}
 
-		public async Task<MenuItemDTO?> UpdateAsync(int id, CreateMenuItemDTO dto)
+		public async Task<MenuItem?> UpdateAsync(int id, UpdateMenuItemDTO dto)
 		{
-			var existing = await _menuItemRepo.GetByIdAsync(id);
-			if (existing is null) { return null; }
-
-			existing.Name = dto.Name;
-			existing.Price = dto.Price;
-			existing.Description = dto.Description;
-			existing.IsPopular = dto.IsPopular;
-			existing.ImageUrl = dto.ImageUrl;
-
-			var updated = await _menuItemRepo.UpdateAsync(existing);
-			return new MenuItemDTO
-			{
-				Id = updated.Id,
-				Name = updated.Name,
-				Price = updated.Price,
-				Description = updated.Description,
-				IsPopular = updated.IsPopular,
-				ImageUrl = updated.ImageUrl
-			};
+			await _menuItemRepo.UpdateAsync(id, dto);
+			return await _menuItemRepo.GetByIdAsync(id);
 		}
 
 		public async Task<bool> DeleteAsync(int id)
