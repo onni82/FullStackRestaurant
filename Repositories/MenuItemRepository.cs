@@ -27,8 +27,11 @@ namespace FullStackRestaurant.Repositories
 
 		public async Task<MenuItem> CreateAsync(MenuItem menuItem)
 		{
+			menuItem.Id = 0;
+
 			_context.MenuItems.Add(menuItem);
 			await _context.SaveChangesAsync();
+
 			return menuItem;
 		}
 
