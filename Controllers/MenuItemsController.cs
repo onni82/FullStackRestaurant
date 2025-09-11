@@ -42,6 +42,11 @@ namespace FullStackRestaurant.Controllers
 		[HttpPut("{id:int}")]
 		public async Task<ActionResult<MenuItemDTO>> Update(int id, [FromBody] UpdateMenuItemDTO dto)
 		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
 			var updated = await _menuItemService.UpdateAsync(id, dto);
 			return updated is null ? NotFound() : Ok(updated);
 		}
