@@ -90,7 +90,7 @@ namespace FullStackRestaurant.Services
 			var booking = await _bookingRepository.GetByIdAsync(id);
 			if (booking == null)
 			{
-				throw new Exception("Booking not found.");
+				throw new KeyNotFoundException("Booking not found.");
 			}
 
 			var newStart = dto.Start;
@@ -118,7 +118,7 @@ namespace FullStackRestaurant.Services
 			booking.Guests = dto.Guests;
 
 			// Assuming the repository has an UpdateAsync method
-			var updated = await _bookingRepository.CreateAsync(booking);
+			var updated = await _bookingRepository.UpdateAsync(booking);
 
 			return new BookingDTO
 			{
