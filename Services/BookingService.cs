@@ -46,12 +46,29 @@ namespace FullStackRestaurant.Services
 
 		public async Task<BookingDTO> CreateAsync(CreateBookingDTO dto)
 		{
+			// Get bookings for the specified table
+			var existing = await _bookingRepository.GetByTableAsync(dto.TableId);
+
+			var newStart = dto.Start;
+			var newEnd = dto.Start.AddHours(2);
+
+			// Check for time conflicts
+			bool conflict = existing.Any(b =>
+				newStart < b.End &&
+				newEnd > b.Start);
+
+			if (conflict)
+			{
+				throw new Exception("This table is already booked at the selected time.");
+			}
+
+			// Create and save the new booking
 			var booking = new Booking
 			{
 				TableId = dto.TableId,
 				CustomerId = dto.CustomerId,
-				Start = dto.Start,
-				End = dto.Start.AddHours(2), // Assuming a default duration of 2 hours
+				Start = newStart,
+				End = newEnd,
 				Guests = dto.Guests
 			};
 
@@ -65,6 +82,52 @@ namespace FullStackRestaurant.Services
 				Start = created.Start,
 				End = created.End,
 				Guests = created.Guests
+			};
+		}
+
+		public async Task<BookingDTO> UpdateAsync(int id, CreateBookingDTO dto)
+		{
+			var booking = await _bookingRepository.GetByIdAsync(id);
+			if (booking == null)
+			{
+				throw new Exception("Booking not found.");
+			}
+
+			var newStart = dto.Start;
+			var newEnd = dto.Start.AddHours(2);
+
+			// Get bookings for the specified table excluding the current booking
+			var existing = await _bookingRepository.GetByTableAsync(dto.TableId);
+
+			// Check for time conflicts excluding the current booking
+			bool conflict = existing.Any(b =>
+				b.Id != id &&
+				newStart < b.End &&
+				newEnd > b.Start);
+
+			if (conflict)
+			{
+				throw new InvalidOperationException("This table is already booked at the selected time.");
+			}
+
+			// Update and save the booking
+			booking.TableId = dto.TableId;
+			booking.CustomerId = dto.CustomerId;
+			booking.Start = newStart;
+			booking.End = newEnd;
+			booking.Guests = dto.Guests;
+
+			// Assuming the repository has an UpdateAsync method
+			var updated = await _bookingRepository.CreateAsync(booking);
+
+			return new BookingDTO
+			{
+				Id = updated.Id,
+				TableId = updated.TableId,
+				CustomerId = updated.CustomerId,
+				Start = updated.Start,
+				End = updated.End,
+				Guests = updated.Guests
 			};
 		}
 

@@ -50,6 +50,25 @@ namespace FullStackRestaurant.Controllers
 		}
 
 		[Authorize]
+		[HttpPut("{id:int}")]
+		public async Task<ActionResult<BookingDTO>> Update(int id, [FromBody] CreateBookingDTO dto)
+		{
+			try
+			{
+				var updated = await _bookingService.UpdateAsync(id, dto);
+				return Ok(updated);
+			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
+			}
+			catch (InvalidOperationException ex)
+			{
+				return BadRequest(new { error = ex.Message });
+			}
+		}
+
+		[Authorize]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete(int id)
 		{

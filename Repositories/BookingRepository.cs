@@ -30,9 +30,23 @@ namespace FullStackRestaurant.Repositories
 				.FirstOrDefaultAsync(b => b.Id == id);
 		}
 
+		public async Task<IEnumerable<Booking>> GetByTableAsync(int tableId)
+		{
+			return await _context.Bookings
+				.Where(b => b.TableId == tableId)
+				.ToListAsync();
+		}
+
 		public async Task<Booking> CreateAsync(Booking booking)
 		{
 			_context.Bookings.Add(booking);
+			await _context.SaveChangesAsync();
+			return booking;
+		}
+
+		public async Task<Booking> UpdateAsync(Booking booking)
+		{
+			_context.Bookings.Update(booking);
 			await _context.SaveChangesAsync();
 			return booking;
 		}
