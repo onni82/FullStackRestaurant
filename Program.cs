@@ -44,6 +44,9 @@ namespace FullStackRestaurant
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
+			builder.Services.AddCors(options => options.AddPolicy("AllowLocal",
+				b => b.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173", "http://localhost:3000")));
+
 			// JWT auth
 			var key = builder.Configuration["Jwt:Key"] ?? "dev_only_change_me_please_1234567890";
 			builder.Services.AddAuthentication(options =>
@@ -77,6 +80,7 @@ namespace FullStackRestaurant
 			}
 
 			app.UseHttpsRedirection();
+			app.UseCors("AllowLocal");
 			app.UseAuthentication();
 			app.UseAuthorization();
 			app.MapControllers();
