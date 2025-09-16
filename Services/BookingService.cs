@@ -44,13 +44,28 @@ namespace FullStackRestaurant.Services
 			};
 		}
 
+		private static DateTime RoundToNearestHalfHour(DateTime dt)
+		{
+			int minutes = dt.Minute;
+			int addMinutes;
+			if (minutes < 15)
+				addMinutes = -minutes;
+			else if (minutes < 45)
+				addMinutes = 30 - minutes;
+			else
+				addMinutes = 60 - minutes;
+
+			var rounded = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, 0, 0, dt.Kind).AddMinutes(dt.Minute + addMinutes);
+			return rounded;
+		}
+
 		public async Task<BookingDTO> CreateAsync(CreateBookingDTO dto)
 		{
 			// Get bookings for the specified table
 			var existing = await _bookingRepository.GetByTableAsync(dto.TableId);
 
-			var newStart = dto.Start;
-			var newEnd = dto.Start.AddHours(2);
+			var newStart = RoundToNearestHalfHour(dto.Start);
+			var newEnd = newStart.AddHours(2);
 
 			// Check for time conflicts
 			bool conflict = existing.Any(b =>
@@ -93,8 +108,8 @@ namespace FullStackRestaurant.Services
 				throw new KeyNotFoundException("Booking not found.");
 			}
 
-			var newStart = dto.Start;
-			var newEnd = dto.Start.AddHours(2);
+			var newStart = RoundToNearestHalfHour(dto.Start);
+			var newEnd = newStart.AddHours(2);
 
 			// Get bookings for the specified table excluding the current booking
 			var existing = await _bookingRepository.GetByTableAsync(dto.TableId);
